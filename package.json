@@ -5,15 +5,29 @@
   "main": "dist/index.js",
   "module": "dist/index.mjs",
   "types": "dist/index.d.ts",
+  "sideEffects": false,
   "scripts": {
     "build": "tsup src/index.ts --format cjs,esm --dts",
     "release": "pnpm run build && changeset publish",
     "lint": "tsc"
   },
-  "author": "",
+  "author": "Miguel Victor <miguelvictor@naver.com>",
   "license": "MIT",
+  "peerDependencies": {
+    "next": "^13.3.0",
+    "react": "^18.2.0"
+  },
+  "dependencies": {
+    "@types/safe-compare": "^1.1.0",
+    "cookie": "^0.5.0",
+    "jsonwebtoken": "^9.0.0",
+    "safe-compare": "^1.1.4"
+  },
   "devDependencies": {
     "@changesets/cli": "^2.26.1",
+    "@types/cookie": "^0.5.1",
+    "@types/jsonwebtoken": "^9.0.1",
+    "@types/react": "^18.0.35",
     "tsup": "^6.7.0",
     "typescript": "^5.0.4"
   }

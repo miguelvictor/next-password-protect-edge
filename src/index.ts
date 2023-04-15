@@ -1,3 +1,1 @@
-export default function add(x: number, y: number) {
-  return x + y;
-}
+export * from "./api"
