@@ -3,7 +3,6 @@ import { serialize } from "cookie"
 import { simple } from "./responses"
 
 interface PasswordProtectHandlerOptions {
-  /* @default next-password-protect */
   cookieName?: string
   cookieSameSite?: boolean | "lax" | "none" | "strict"
   cookieSecure?: boolean

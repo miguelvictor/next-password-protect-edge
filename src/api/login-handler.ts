@@ -6,7 +6,6 @@ import { simple } from "./responses"
 
 interface PasswordProtectHandlerOptions {
   cookieMaxAge?: number
-  /* @default next-password-protect */
   cookieName?: string
   cookieSameSite?: boolean | "lax" | "none" | "strict"
   cookieSecure?: boolean

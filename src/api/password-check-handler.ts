@@ -3,7 +3,6 @@ import jwt from "jsonwebtoken"
 import { simple } from "./responses"
 
 interface PasswordProtectHandlerOptions {
-  /* @default next-password-protect-edge */
   cookieName?: string
 }
 
