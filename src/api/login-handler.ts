@@ -1,8 +1,9 @@
 import type { NextRequest } from "next/server"
-import jwt from "jsonwebtoken"
 import compare from "safe-compare"
 import { serialize } from "cookie"
+
 import { simple } from "./responses"
+import { sha256 } from "./digest"
 
 interface PasswordProtectHandlerOptions {
   cookieMaxAge?: number
@@ -12,9 +13,15 @@ interface PasswordProtectHandlerOptions {
   domain?: string
 }
 
-export const loginHandler =
-  (password: string, options?: PasswordProtectHandlerOptions) =>
-  async (req: NextRequest) => {
+export function loginHandler(
+  password: any,
+  options?: PasswordProtectHandlerOptions
+) {
+  // check password validity
+  if (typeof password !== "string" || password.length === 0)
+    throw new Error(`[next-password-protect-edge] Invalid password`)
+
+  return async (req: NextRequest) => {
     // only accept POST requests
     if (req.method !== "POST") return simple(405)
 
@@ -42,12 +49,9 @@ export const loginHandler =
         ? options?.cookieSecure
         : process.env.NODE_ENV === "production"
 
-    /* NOTE: It's not usual to use the password as JWT secret, but since you already
-     * have access to the environment when you know the password, in this specific
-     * use case it doesn't add any value for an intruder if the secret is known.
-     */
+    // just return the sha-256 hash of the password for simplicity
     return simple(200, {
-      "Set-Cookie": serialize(cookieName, jwt.sign({}, password), {
+      "Set-Cookie": serialize(cookieName, await sha256(password), {
         domain: options?.domain,
         httpOnly: true,
         sameSite,
@@ -57,3 +61,4 @@ export const loginHandler =
       }),
     })
   }
+}

@@ -1,6 +1,7 @@
 import type { NextRequest } from "next/server"
-import jwt from "jsonwebtoken"
+
 import { simple } from "./responses"
+import { sha256 } from "./digest"
 
 interface PasswordProtectHandlerOptions {
   cookieName?: string
@@ -13,28 +14,27 @@ const headers = {
   Expires: "0", // Proxies.
 }
 
-export const passwordCheckHandler =
-  (password: string, options?: PasswordProtectHandlerOptions) =>
-  async (req: NextRequest) => {
+export function passwordCheckHandler(
+  password: string,
+  options?: PasswordProtectHandlerOptions
+) {
+  // check password validity
+  if (typeof password !== "string" || password.length === 0)
+    throw new Error(`[next-password-protect-edge] Invalid password`)
+
+  return async (req: NextRequest) => {
     // only accept GET requests
     if (req.method !== "GET") return simple(405, headers)
 
     // extract the token from the cookies
     const cookieName = options?.cookieName || "next-password-protect-edge"
     const token = req.cookies.get(cookieName)?.value
-
-    // only verify the token if it's a string and not empty
-    if (typeof token === "string" && token.length > 0) {
-      /* NOTE: It's not usual to use the password as JWT secret, but since you already
-       * have access to the environment when you know the password, in this specific
-       * use case it doesn't add any value for an intruder if the secret is known.
-       */
-      try {
-        jwt.verify(token, password)
-        return simple(200, headers)
-      } catch (_) {}
-    }
+    const hash = await sha256(password)
 
     // token is invalid or missing
-    return simple(401, headers)
+    if (typeof token !== "string" || hash !== token) return simple(401, headers)
+
+    // token is valid
+    return simple(200, headers)
   }
+}
