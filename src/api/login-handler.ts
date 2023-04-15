@@ -1,8 +1,7 @@
 import type { NextRequest } from "next/server"
-import compare from "safe-compare"
 import { serialize } from "cookie"
 
-import { simple } from "./responses"
+import { json, simple } from "./responses"
 import { sha256 } from "./digest"
 
 interface PasswordProtectHandlerOptions {
@@ -38,8 +37,12 @@ export function loginHandler(
     }
 
     // check password existence
-    if (typeof body.password !== "string" || !compare(body.password, password))
-      return simple(400)
+    if (
+      typeof body.password !== "string" ||
+      body.password.length === 0 ||
+      body.password !== password
+    )
+      return json(400, { message: "Invalid password" })
 
     // build cookie options
     const cookieName = options?.cookieName || "next-password-protect-edge"
@@ -50,15 +53,19 @@ export function loginHandler(
         : process.env.NODE_ENV === "production"
 
     // just return the sha-256 hash of the password for simplicity
-    return simple(200, {
-      "Set-Cookie": serialize(cookieName, await sha256(password), {
-        domain: options?.domain,
-        httpOnly: true,
-        sameSite,
-        secure,
-        path: "/",
-        ...(options?.cookieMaxAge ? { maxAge: options?.cookieMaxAge } : {}),
-      }),
-    })
+    return json(
+      200,
+      { message: "OK" },
+      {
+        "Set-Cookie": serialize(cookieName, await sha256(password), {
+          domain: options?.domain,
+          httpOnly: true,
+          sameSite,
+          secure,
+          path: "/",
+          ...(options?.cookieMaxAge ? { maxAge: options?.cookieMaxAge } : {}),
+        }),
+      }
+    )
   }
 }

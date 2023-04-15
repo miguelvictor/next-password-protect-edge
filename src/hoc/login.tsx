@@ -4,9 +4,9 @@ import { API_LOGIN } from "../defaults"
 export interface LoginComponentProps {
   apiUrl?: string
   backUrl?: string
-  /* @default #FBCC26 */
+  /* @default #7dd3fc */
   buttonBackgroundColor?: string
-  /* @default #111 */
+  /* @default #0c4a6e */
   buttonColor?: string
   logo?: string
 }
@@ -48,13 +48,14 @@ export const LoginComponent = ({
 
       const { message } = await res.json()
 
-      if (res.status === 200) {
+      if (res.ok) {
         window.location.reload()
       } else {
         setError(message)
         setBusy(false)
       }
     } catch (e) {
+      console.error(e)
       setError("An error has occured.")
       setBusy(false)
     }
@@ -75,7 +76,7 @@ export const LoginComponent = ({
   return (
     <div
       style={{
-        backgroundColor: "#fff",
+        backgroundColor: "#f3f4f6",
         display: "flex",
         flexDirection: "column",
         alignItems: "center",
@@ -102,7 +103,7 @@ export const LoginComponent = ({
           dangerouslySetInnerHTML={{
             __html: `
             html {
-              font-family: ui-sans-serif,system-ui,-apple-system,BlinkMacSystemFont,Segoe UI,Roboto,Helvetica Neue,Arial,Noto Sans,sans-serif,"Apple Color Emoji","Segoe UI Emoji",Segoe UI Symbol,"Noto Color Emoji";
+              font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
             }
             body {
               margin: 0;
@@ -162,6 +163,7 @@ export const LoginComponent = ({
         <div
           id="password-form"
           style={{
+            background: "white",
             display: "flex",
             flexDirection: "column",
             alignItems: "flex-start",
@@ -221,12 +223,12 @@ export const LoginComponent = ({
               disabled={isBusy}
               style={{
                 appearance: "none",
-                background: buttonBackgroundColor || "#FBCC26",
+                background: buttonBackgroundColor || "#7dd3fc",
                 borderRadius: "52px",
                 border: "none",
                 padding: "12px 32px",
                 fontSize: "20px",
-                color: buttonColor || "#111",
+                color: buttonColor || "#0c4a6e",
                 marginTop: "32px",
                 cursor: "pointer",
                 textAlign: "center",

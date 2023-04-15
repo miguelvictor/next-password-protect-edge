@@ -8,13 +8,17 @@ jobs:
   build:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v3
-      - uses: pnpm/action-setup@v2
-        with:
-          version: 7
-      - uses: actions/setup-node@v3
+      - name: Checkout Project
+        uses: actions/checkout@v3
+
+      - name: Use Node.js 18
+        uses: actions/setup-node@v3
         with:
           node-version: 18.x
-          cache: pnpm
-      - run: pnpm install --frozen-lockfile
-      - run: pnpm run lint && pnpm run build
+          cache: yarn
+
+      - name: Install Dependencies
+        run: yarn --frozen-lockfile
+
+      - name: Typecheck and Build
+        run: yarn lint && yarn build

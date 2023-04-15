@@ -1,27 +1,46 @@
 {
   "name": "next-password-protect-edge",
-  "version": "1.1.2",
-  "description": "",
+  "version": "1.1.8",
+  "description": "Simple password protection for Next.js with Edge Functions",
   "main": "dist/index.js",
-  "module": "dist/index.mjs",
   "types": "dist/index.d.ts",
   "sideEffects": false,
   "scripts": {
-    "build": "tsup src/index.ts --format cjs,esm --dts",
+    "build": "tsup",
+    "prepack": "npm run build",
     "lint": "tsc"
   },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/miguelvictor/next-password-protect-edge.git"
+  },
+  "keywords": [
+    "next",
+    "next.js",
+    "password protect",
+    "edge"
+  ],
   "author": "Miguel Victor <miguelvictor@naver.com>",
   "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/miguelvictor/next-password-protect-edge/issues"
+  },
+  "homepage": "https://github.com/miguelvictor/next-password-protect-edge",
+  "files": [
+    "dist/**/*.js",
+    "dist/**/*.mjs",
+    "dist/**/*.d*"
+  ],
+  "peerDependencies": {
+    "next": ">=12.0.0",
+    "react": ">=16.0.0"
+  },
   "dependencies": {
-    "@types/safe-compare": "^1.1.0",
-    "cookie": "^0.5.0",
-    "next": "^13.3.0",
-    "react": "^18.2.0",
-    "safe-compare": "^1.1.4"
+    "cookie": "^0.5.0"
   },
   "devDependencies": {
     "@types/cookie": "^0.5.1",
-    "@types/jsonwebtoken": "^9.0.1",
+    "@types/node": "^18.15.11",
     "@types/react": "^18.0.35",
     "tsup": "^6.7.0",
     "typescript": "^5.0.4"
