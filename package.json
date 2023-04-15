@@ -1,6 +1,6 @@
 {
   "name": "next-password-protect-edge",
-  "version": "1.1.8",
+  "version": "1.1.9",
   "description": "Simple password protection for Next.js with Edge Functions",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
@@ -42,6 +42,8 @@
     "@types/cookie": "^0.5.1",
     "@types/node": "^18.15.11",
     "@types/react": "^18.0.35",
+    "next": "^13.3.0",
+    "react": "^18.2.0",
     "tsup": "^6.7.0",
     "typescript": "^5.0.4"
   }
